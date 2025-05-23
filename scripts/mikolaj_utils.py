@@ -5,11 +5,14 @@ import matplotlib.image as mpimg
 from matplotlib.patches import Rectangle
 from matplotlib.animation import FuncAnimation
 
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
 
-def plot_bar_map(df, column, title, output, reduction):
+
+def plot_bar_map(df, column, title, output, reduction, thousands=False):
     '''Plot Malaysia map with animated bars showing a value.'''
     # Load data
-    groups = df.groupby([df['date'].str[:7], df['state']])[column].last().unstack(1)
+    groups = df.groupby([df['date'].str[:7], df['state']])[column].sum().unstack(1)
 
     fig, ax = plt.subplots(1,1)
     fig.set_tight_layout(True)
@@ -69,7 +72,8 @@ def plot_bar_map(df, column, title, output, reduction):
             bar.set_height(val / reduction)
 
             label.set_y(bar.get_y() - val / reduction - 10)
-            label.set_text(val)
+            txt = f'{val//1000}k' if thousands else val
+            label.set_text(txt)
 
         # Update date
         date.set_text('date: '+data.name)
@@ -81,10 +85,66 @@ def plot_bar_map(df, column, title, output, reduction):
     ani.save(output, writer='imagemagick', dpi=300)
 
 
+def plot_interactive_piechart(df, column, output, title):
+    ''''''
+    groups = df.groupby([df['date'].str[:7], df['state']])[column].sum().reset_index()
+
+    # Create pie chart data for each month
+    fig = go.Figure()
+
+    months = groups.date.unique()
+
+    for i, month in enumerate(months):
+        month_data = groups[groups['date'] == month]
+        fig.add_trace(go.Pie(
+            labels=month_data['state'],
+            values=month_data[column],
+            name=month,
+            visible=(i == 0)  # Only the first month's pie is visible initially
+        ))
+
+    # Slider steps
+    steps = []
+    for i, month in enumerate(months):
+        step = dict(
+            method='update',
+            args=[
+                {'visible': [j == i for j in range(len(months))]},
+                {'title': {
+                    'text': f'{title} for {month} (n_total = {groups[groups["date"] == month][column].sum()})',
+                    'x': 0.1,
+                    'y': 0.9,
+                    'xanchor': 'left'
+                }}
+            ],
+            label=month
+        )
+        steps.append(step)
+
+    # Slider layout
+    sliders = [dict(
+        active=0,
+        pad={"t": 50},
+        steps=steps
+    )]
+
+    fig.update_layout(
+        title={
+            'text': f'{title} for 2020-01\nn_total = ...',
+            'x': 0.1,
+            'y': 0.9,
+            'xanchor': 'left'
+        },
+        sliders=sliders
+    )
+
+    fig.write_html(output)
+
+
 if __name__ == '__main__':
 
     filepath = '../data/cases_state.csv'
 
     df = pd.read_csv(filepath)
 
-    plot_bar_map(df, 'cases_active', 'Active cases', '../figures/region_active_cases.gif', 500)
+    plot_interactive_piechart(df, 'cases_active', '../figures/test.html', 'test')
