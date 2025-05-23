@@ -1,5 +1,5 @@
 import pandas as pd
-from utils import plot_bar_map
+from scripts.mikolaj_utils import plot_bar_map
 
 if __name__ == '__main__':
     filepath = '../data/cases_state.csv'
