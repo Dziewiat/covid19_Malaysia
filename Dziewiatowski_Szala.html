@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COVID-19 in Malaysia - Data Analysis and Visualizations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding: 1rem;
+      max-width: 960px;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #004080;
+    }
+    .plot-container img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .gif-container img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>COVID-19 in Malaysia</h1>
+  <h2> Mikołaj Dziewiatowski, Norbert Szala </h2>
+  <p>This page presents key trends and visualizations about the COVID-19 pandemic in Malaysia, using interactive and animated plots.</p>
+  <p><small>Source: https://github.com/MoH-Malaysia/covid19-public. Access data: 23.05.2025</small></p>
+
+  <div class="plot-container gif-container">
+    <h2>Active cases in regions</h2>
+    <img src="./figures/region_active_cases_map.gif" alt="Active cases map GIF">
+  </div>
+
+
+  <div class="plot-container">
+    <iframe
+      src="./figures/region_active_cases_piechart.html"
+      width="100%"
+      height="750"
+      style="border:none;">
+    </iframe>
+  </div>
+
+
+  <div class="plot-container gif-container">
+    <h2>Daily Deaths in regions</h2>
+    <img src="./figures/region_deaths_map.gif" alt="Daily deaths map GIF">
+  </div>
+
+
+  <div class="plot-container">
+    <iframe
+      src="./figures/region_deaths_piechart.html"
+      width="100%"
+      height="750"
+      style="border:none;">
+    </iframe>
+  </div>
+
+  <div class="plot-container">
+    <h3>Daily deaths in Malaysia - Data historical and prediction using linear regression model.</h3>
+    <img src="./Plots/Norbert/daily_deaths.jpg" alt="Predicted daily deaths in Malaysia">
+  </div>
+
+  <div class="plot-container">
+    <h3>Cumulative deaths in Malaysia - Data historical and prediction using linear regression model.</h3>
+    <img src="./Plots/Norbert/cumulative_deaths.jpg" alt="Predicted cumulative deaths in Malaysia">
+  </div>
+
+
+
+  <div class="plot-container gif-container">
+    <h2>Daily vaccine doses in regions</h2>
+    <img src="./figures/region_vaxinations_map.gif" alt="Daily vaccine doses map GIF">
+  </div>
+
+
+  <div class="plot-container">
+    <iframe
+      src="./figures/region_vaxinations_piechart.html"
+      width="100%"
+      height="750"
+      style="border:none;">
+    </iframe>
+  </div>
+
+  <div class="plot-container gif-container">
+    <h2>Vaccination in Malaysia across the top five common nationalities - adults (full doses only).</h2>
+    <img src="./Plots/Norbert/vaccination_nat.gif" alt="Vaccination by nationality GIF">
+  </div>
+
+  <div class="plot-container gif-container">
+    <h2>Vaccination in Malaysia across sexes - adults.</h2>
+    <img src="./Plots/Norbert/vaccination_sex.gif" alt="Vaccination by sex GIF">
+  </div>
+
+</body>
+</html>
